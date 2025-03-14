@@ -1,7 +1,6 @@
 import Image from 'next/image'
 import Link from 'next/link'
 import { FC } from 'react'
-import { formatDate } from '../../utils'
 
 interface BlogPost {
   title: string
@@ -17,7 +16,7 @@ interface BlogCardProps {
 }
 
 const BlogCard: FC<BlogCardProps> = ({ post }) => {
-  const { title, slug, cover, publishedDate, category, shortDescription } = post
+  const { title, slug, cover, shortDescription } = post
 
   return (
     <Link className="group relative block rounded-xl focus:outline-hidden" href={`/blogs/${slug}`}>
