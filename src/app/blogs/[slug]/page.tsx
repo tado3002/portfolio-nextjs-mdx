@@ -1,39 +1,39 @@
-import { Post } from '@/components/Markdown/Post'
-import { getBlog, getBlogs } from '@/services/blogs'
-import { formatDate } from '@/utils'
-import Image from 'next/image'
-import { notFound } from 'next/navigation'
+import { Post } from "@/components/Markdown/Post";
+import { getBlog, getBlogs } from "@/services/blogs";
+import { formatDate } from "@/utils";
+import Image from "next/image";
+import { notFound } from "next/navigation";
 
 interface StaticParams {
-  slug: string
+  slug: string;
 }
 
-export const dynamicParams = false
+export const dynamicParams = false;
 
 export async function generateStaticParams(): Promise<StaticParams[]> {
-  const posts = await getBlogs()
+  const posts = await getBlogs();
 
   return posts.map((post) => {
     return {
       slug: `${post.slug}`,
-    }
-  })
+    };
+  });
 }
 
 interface PageProps {
   params: Promise<{
-    slug: string
-  }>
+    slug: string;
+  }>;
 }
 
 export default async function Page(props: PageProps) {
-  const params = await props.params
+  const params = props.params;
 
-  const { slug } = params
+  const { slug } = await params;
 
-  const post = await getBlog(slug)
+  const post = await getBlog(slug);
 
-  if (!post) return notFound()
+  if (!post) return notFound();
 
   return (
     <main>
@@ -54,7 +54,9 @@ export default async function Page(props: PageProps) {
               alt={post.title}
               fill={true}
               sizes="100%"
-              className="rounded-md"
+              className="rounded-xl object-cover"
+              placeholder="blur"
+              blurDataURL="/placeholder.png"
             />
             {/* <figcaption className="mt-2 text-center text-sm text-gray-500">
               {post.title || 'Cover image for the article'}
@@ -67,5 +69,5 @@ export default async function Page(props: PageProps) {
         </section>
       </article>
     </main>
-  )
+  );
 }

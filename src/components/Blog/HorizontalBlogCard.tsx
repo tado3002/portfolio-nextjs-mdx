@@ -1,19 +1,19 @@
-import Image from 'next/image'
-import Link from 'next/link'
-import { FC } from 'react'
-import { formatDate } from '../../utils'
+import Image from "next/image";
+import Link from "next/link";
+import { FC } from "react";
+import { formatDate } from "../../utils";
 
 interface BlogPost {
-  title: string
-  shortDescription: string
-  cover: string
-  slug: string
-  publishedDate: string
-  estimatedTimeToRead?: string
+  title: string;
+  shortDescription: string;
+  cover: string;
+  slug: string;
+  publishedDate: string;
+  estimatedTimeToRead?: string;
 }
 
 interface BlogCardProps {
-  post: BlogPost
+  post: BlogPost;
 }
 
 const BlogCard: FC<BlogCardProps> = ({ post }) => {
@@ -23,15 +23,18 @@ const BlogCard: FC<BlogCardProps> = ({ post }) => {
     cover,
     slug,
     publishedDate,
-    estimatedTimeToRead = '3 min',
-  } = post
+    estimatedTimeToRead = "3 min",
+  } = post;
 
   return (
-    <div key={slug} className="flex flex-col gap-3 rounded-lg border p-3 lg:flex-row">
+    <div
+      key={slug}
+      className="flex flex-col gap-3 rounded-lg border p-3 lg:flex-row"
+    >
       <figure className="relative mt-1 h-24 min-w-40 overflow-hidden bg-gray-200">
         <Image
           className="rounded-md object-cover transition-transform duration-300 hover:scale-125"
-          src={cover}
+          src={process.env.NEXT_PUBLIC_SITE_URL + `/uploads/${cover}`}
           alt={title}
           fill={true}
           sizes="100%"
@@ -53,7 +56,8 @@ const BlogCard: FC<BlogCardProps> = ({ post }) => {
         </p>
       </div>
     </div>
-  )
-}
+  );
+};
 
-export default BlogCard
+export default BlogCard;
+

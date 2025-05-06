@@ -1,16 +1,19 @@
-'use client'
+"use client";
 import { useEffect } from "react";
 import Prism from "prismjs";
-import "prismjs/themes/prism-tomorrow.css"; // Ganti dengan tema lain jika perlu
+import "prismjs/themes/prism-tomorrow.css";
 
 interface CodeBlockProps {
   code: string;
   language?: string;
 }
 
-const CodeBlock: React.FC<CodeBlockProps> = ({ code, language = "javascript" }) => {
+const CodeBlock: React.FC<CodeBlockProps> = ({
+  code,
+  language = "javascript",
+}) => {
   useEffect(() => {
-    Prism.highlightAll(); // Highlight setiap kali komponen di-render
+    Prism.highlightAll();
   }, [code]);
 
   return (
