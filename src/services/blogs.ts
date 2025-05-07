@@ -16,30 +16,32 @@ export async function getBlogs(): Promise<Blog[]> {
   const dirPath = "content/blogs";
   try {
     await fs.stat(dirPath);
-    const posts = await fs.readdir("./content/blogs/");
-    return Promise.all(
-      posts
-        .filter((file) => path.extname(file) === ".mdx")
-        .map(async (file) => {
-          const filePath = `./content/blogs/${file}`;
-          const fileContent = await fs.readFile(filePath, "utf8");
-          const { data, content } = matter(fileContent);
-
-          return { ...data, body: content } as Blog;
-        }),
-    );
-  } catch (error: NodeJS.ErrnoException) {
-    if (error.code === "ENOENT") {
-      await fs.mkdir("content/blog", { recursive: true });
-      return [];
-    } else {
-      console.log(error);
+  } catch (error: unknown) {
+    if (
+      error instanceof Error &&
+      (error as NodeJS.ErrnoException).code === "ENOENT"
+    ) {
+      await fs.mkdir("content/blogs", { recursive: true });
     }
   }
+  const posts = await fs.readdir("./content/blogs/");
+  if (posts.length === 0) return [] as Blog[];
+  return Promise.all(
+    posts
+      .filter((file) => path.extname(file) === ".mdx")
+      .map(async (file) => {
+        const filePath = `./content/blogs/${file}`;
+        const fileContent = await fs.readFile(filePath, "utf8");
+        const { data, content } = matter(fileContent);
+
+        return { ...data, body: content } as Blog;
+      }),
+  );
 }
 
 export async function getBlog(slug: string) {
   const posts = await getBlogs();
+  if (!posts) return undefined;
   return posts.find((post) => post.slug === slug);
 }
 
@@ -48,7 +50,9 @@ export async function getCategories(): Promise<BlogCategory[]> {
 }
 
 export async function getSlugBlogs() {
-  return await getBlogs().then((blogs) => blogs.map((post) => post.slug));
+  return await getBlogs().then((blogs) => {
+    blogs!.map((post) => post.slug);
+  });
 }
 
 type BlogCategory = {

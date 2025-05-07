@@ -4,7 +4,6 @@ import path from "path";
 import { existsSync } from "fs";
 import { parse } from "cookie";
 import { getBlog, getBlogs } from "@/services/blogs";
-import { NextApiRequest } from "next";
 
 function isAdminRequest(req: NextRequest): boolean {
   const cookieHeader = req.headers.get("cookie") || "";
@@ -14,7 +13,7 @@ function isAdminRequest(req: NextRequest): boolean {
 
 // GET
 export async function GET(
-  req: NextApiRequest,
+  req: NextRequest,
   { params }: { params: Promise<{ slug: string }> },
 ) {
   const { slug } = await params;
@@ -93,7 +92,7 @@ async function slugify(text: string) {
 
   let exist = 0;
   await getBlogs().then((blogs) =>
-    blogs.forEach((blog) => {
+    blogs!.forEach((blog) => {
       if (blog.title === text) {
         exist++;
       }

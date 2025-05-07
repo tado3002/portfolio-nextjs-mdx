@@ -58,7 +58,7 @@ async function slugify(text: string) {
 
   let exist = 0;
   await getBlogs().then((blogs) =>
-    blogs.forEach((blog) => {
+    blogs!.forEach((blog) => {
       if (blog.title === text) {
         exist++;
       }

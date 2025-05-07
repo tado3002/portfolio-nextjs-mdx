@@ -2,7 +2,7 @@ import EditBlogForm from "@/components/Form/EditBlogForm";
 import { Blog, getBlog } from "@/services/blogs";
 
 interface Props {
-  params: { slug: string };
+  params: Promise<{ slug: string }>;
 }
 
 export default async function EditPage({ params }: Props) {
